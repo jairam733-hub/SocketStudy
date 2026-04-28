@@ -1,5 +1,6 @@
-# Ex.No:1a  			Study of Socket Programming
-
+# Ex.No:1 (a)    Study of Socket Programming
+## Name : JAIRAM J
+## Ref No : 25012221
 ## Aim: 
 To perform a study on Socket Programming
 ## Introduction:
@@ -52,6 +53,142 @@ Socket programming finds applications in various domains, including web developm
 3.	File Transfer Protocol: Protocols like FTP (File Transfer Protocol) utilize socket programming for transferring files between a client and a server.
 4.	Networked Games: Online multiplayer games rely on socket programming to facilitate communication between game clients and servers.
 5.	RPC mechanisms: which allow processes to execute code on a remote server, often use socket programming for communication.
+
+## CODE's...
+
+### 1) Clint Side
+```
+import socket
+import time
+
+def client():
+    time.sleep(1)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('127.0.0.1', 12345))
+
+    messages = [
+        "hii buddy!",
+        "what is Computer Network?",
+        "Thank you"
+    ]
+
+    for msg in messages:
+        client_socket.send(msg.encode())
+        response = client_socket.recv(1024).decode()
+        print("Server:", response)
+        time.sleep(1)
+
+    client_socket.close()
+
+```
+### 2) Server Side
+```
+import socket
+import threading
+import time
+
+def server():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('127.0.0.1', 12345))
+    server_socket.listen(1)
+
+    conn, addr = server_socket.accept()
+    print("Server connected to client")
+
+    while True:
+        data = conn.recv(1024).decode()
+
+        if not data:
+            break
+
+        print("Client:", data)
+
+        if "hii buddy!" in data.lower():
+            reply = "Hello! Welcome !! What you want  😊"
+        elif "what is computer network?" in data.lower():
+            reply = "A interconnected group of computing devices (like computers, servers, and phones) that use shared protocols to exchange data and share resources.🔥"
+        elif "thank you" in data.lower():
+            reply = "Welcome !!If you need anythig come ..... Connection closing..."
+            conn.send(reply.encode())
+            break
+        else:
+            reply = "I didn't understand that. Ask about Computer Network related  or say hii buddy"
+
+        conn.send(reply.encode())
+
+    conn.close()
+    server_socket.close()
+```
+
+## Full Functional Code...
+```
+import socket
+import threading
+import time
+
+def server():
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server_socket.bind(('127.0.0.1', 12345))
+    server_socket.listen(1)
+
+    conn, addr = server_socket.accept()
+    print("Server connected to client")
+
+    while True:
+        data = conn.recv(1024).decode()
+
+        if not data:
+            break
+
+        print("Client:", data)
+
+        if "hii buddy!" in data.lower():
+            reply = "Hello! Welcome !! What you want  😊"
+        elif "what is computer network?" in data.lower():
+            reply = "A interconnected group of computing devices (like computers, servers, and phones) that use shared protocols to exchange data and share resources.🔥"
+        elif "thank you" in data.lower():
+            reply = "Welcome !!If you need anythig come ..... Connection closing..."
+            conn.send(reply.encode())
+            break
+        else:
+            reply = "I didn't understand that. Ask about Computer Network related  or say hii buddy"
+
+        conn.send(reply.encode())
+
+    conn.close()
+    server_socket.close()
+
+
+def client():
+    time.sleep(1)
+
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('127.0.0.1', 12345))
+
+    messages = [
+        "hii buddy!",
+        "what is Computer Network?",
+        "Thank you"
+    ]
+
+    for msg in messages:
+        client_socket.send(msg.encode())
+        response = client_socket.recv(1024).decode()
+        print("Server:", response)
+        time.sleep(1)
+
+    client_socket.close()
+
+
+threading.Thread(target=server).start()
+threading.Thread(target=client).start()
+```
+
+
+## Output.
+<img width="1287" height="482" alt="Screenshot 2026-04-28 152227" src="https://github.com/user-attachments/assets/aa9de4fd-0467-4296-aa67-a6487405858e" />
+
 
 
 ## Result:
